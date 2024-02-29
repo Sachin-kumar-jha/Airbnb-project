@@ -88,6 +88,10 @@ app.use((req,res,next)=>{
   app.use("/listings/:id/reviews",reviewRouter);
   app.use("/",userRouter);
 
+app.get("/listings",(req,res)=>{
+    res.render("listings/show.ejs");
+})
+
 
 
 
