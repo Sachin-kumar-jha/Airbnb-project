@@ -1,0 +1,59 @@
+<style>
+    .search-btn{
+         background-color:#fe424d;
+         color:#fff;
+         border-radius: 1.5rem;
+         padding: 0 1.5rem o 1.5rem;
+    }
+    .search-btn:hover{
+         background-color:#fe424d;
+         color:#fff;
+    }
+    .search-btn i{
+     display: inline;
+     margin-right:0.5rem;
+    }
+    .search-input{
+        border-radius: 1.5rem;
+        padding: 0.5rem 3rem;
+        font-size: 1rem;
+    }
+    .nav-search{
+        margin-left:auto !important;
+    }
+</style>
+
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/listings"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAA4CAMAAABnuDDbAAAAbFBMVEX/////REr/P0b/3N3/QUj/Rkz/+vr/SU//6+z/8vL/kpX/5+j/S1H/PUT/UFb/tbf/d3v/1db/sbP/rK7/wcP/l5r/bnL/4uP/oqX/YGX/p6n/VVr/c3f/0NH/hon/fID/Nj3/Zmv/jI//yMmpdqfGAAACKUlEQVRIie1V25arIAwlys0LKtY7Uqv+/z8OoOP0TFvGvpx5mSwXElc2SXYSROhPfl14GL2LGDHG01uoKIU4X0DRNzAFaLNWcD0PkTh27yu0pzEN2TJJ8HQWonG97xYcnsTM7JMwDsVZN92xj086+nJz2pEG5yZqo/OOGjDGbWP6YEyMozPUSTCktYTE5QKMG+pO1KjAkS1Q6+DGRxL82AyhbYEIFqdMjNpmSH7AXLGJhweDU2qg+yk+SbCNhJLdT+qiBf9MxNhlPDtjuhVH3tX4iUTBVsIcKrOWbjUngA8zuLkxHlK1L1ZWyD0Y1e+b3FRpgXXXstkT2lfkTRqzowNieD3kPDiCiJTqD8PBwxyFoxRcZf1huHH+QqZ9qFGbpTlTfFMS8FU1wbOzyyENkSbMcZ30/qJqINchVkHDnXGg6uEKTPogJo84E1B8klyNILL6xHVKPdqvir64V1jzu49t7R279Obumep2fwvom5e5dZvQKrg/WQcvLqywG8KSywqVOh9W0N2QIFqGl06aqlVD9+T6yQVTADImCLO0WTNQRGgqiMqCVWZEMVF9h5g5pmYwwzpDZLK/qwpFc+aaNpukGTo6ku+lkoG2i8VYO5dPhUMwNDaFtPmsD0mFIv8XY7jucOIwk8Pk4iGjnuVrww5MOukLKVCwYdioS/Y44HwWosEyZkgsNp9GiJHSm6F+HqXVmmetyrlpSOoe25qco61D7adN+5P/Lh+8Vx09ZSTsWQAAAABJRU5ErkJggg=="/></a>
+        <button class="navbar-toggler" type="button"
+         data-bs-toggle="collapse" 
+         data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse"
+         id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/listings">Explore</a>
+            </div>
+            <div class="nav-search nav-hover nav-search-search">
+                <form method="GET" action="/listings/search"  class="d-flex needs-validation" role="search" id="searchBox" >
+                    <input class="form-control me-2 search-input" arial-label="search" type="search" placeholder="Search" name="q" id="mySearchInput">
+                    <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+                  </form>
+            </div>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/listings/new">Airbnb your home</a>
+                <% if(!currUser){%>
+                    <a class="nav-link"  href="/signup"><b>SignUp</b></a>
+                    <a class="nav-link" href="/login"><b>Log In</b></a>
+                <%}%>
+               <% if(currUser){%>
+                <a class="nav-link" href="/logout">Log Out</a>
+                <%}%>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
