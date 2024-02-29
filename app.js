@@ -86,7 +86,7 @@ app.use((req,res,next)=>{
 
   app.use("/listings",listingRouter);
   app.use("/listings/:id/reviews",reviewRouter);
-  app.use("/listings",userRouter);
+  app.use("/",userRouter);
 //Create a starting route//
 
 
