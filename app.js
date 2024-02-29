@@ -87,12 +87,6 @@ app.use((req,res,next)=>{
   app.use("/listings",listingRouter);
   app.use("/listings/:id/reviews",reviewRouter);
   app.use("/",userRouter);
-//Create a starting route//
-//app.get("/",(req,res)=>{
-//    res.send("Hi, I am sachin");
-//});
-
-
 
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"Page not Found"));
