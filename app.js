@@ -88,9 +88,7 @@ app.use((req,res,next)=>{
   app.use("/listings/:id/reviews",reviewRouter);
   app.use("/",userRouter);
 //Create a starting route//
-app.get("/",(req,res)=>{
-    res.send("Hi, I am sachin");
-});
+
 
 
 
