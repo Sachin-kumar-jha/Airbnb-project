@@ -24,7 +24,9 @@ saveRedirectUrl,
 passport.authenticate("local" ,{failureRedirect:'/login',failureFlash:true}) , wrapAsync(userController.loginUser));
 
 router.get("/logout",userController.logoutUser);
-
+router.get("/",(req,res)=>{
+  res.redirect("/listings);
+}
 
 
 module.exports=router;
