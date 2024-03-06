@@ -26,7 +26,7 @@ passport.authenticate("local" ,{failureRedirect:'/login',failureFlash:true}) , w
 router.get("/logout",userController.logoutUser);
 
 router.get("/",(req,res)=>{
-  res.redirect("/listings);
+  res.redirect("/listings");
 });
 
 
