@@ -1,14 +1,32 @@
-mapboxgl.accessToken =mapToken;
-const map = new mapboxgl.Map({
-container: 'map',
-style:'mapbox://styles/mapbox/streets-v12',
-center:listing.geometry.coordinates, // starting position [lng, lat]
-zoom:8 // starting zoom
-});
 
 
-const marker1 = new mapboxgl.Marker({color:'red'})
-.setLngLat(listing.geometry.coordinates)
-.setPopup(new mapboxgl.Popup({offset:25}).setHTML(`<h4>${listing.location}</h4> <P>Exact Location provided after booking</P>`))
-.addTo(map);
- 
+Radar.initialize('<%= MAP_TOKEN %>');
+
+// Listing coordinates
+const listingCoords = listing.geometry ? listing.geometry.coordinates : null;
+
+// Initialize map — default to world view
+const map = L.map('map').setView([0, 0], 2);
+
+// Add OpenStreetMap tiles (free)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Set map view to listing location or user's location
+if (listingCoords) {
+    map.setView([listingCoords[1], listingCoords[0]], 13); // [lat, lng]
+    L.marker([listingCoords[1], listingCoords[0]]).addTo(map)
+        .bindPopup(`<b>${listing.location}</b>`)
+        .openPopup();
+} else {
+    navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        map.setView([latitude, longitude], 13);
+        L.marker([latitude, longitude]).addTo(map)
+            .bindPopup('You are here')
+            .openPopup();
+    }, (error) => {
+        console.error('Geolocation error:', error);
+    });
+}

@@ -6,6 +6,7 @@ const ExpressError  =require("./utils/ExpressError");
 
 
 module.exports.isLoggedIn=(req,res,next)=>{
+    //console.log(req.isAuthenticated());
     if(!req.isAuthenticated()){
         req.session.redirectUrl=req.originalUrl;
         req.flash("error","you must be logged in to create listing");
@@ -47,9 +48,12 @@ module.exports.isreviewAuthor= async(req,res,next)=>{
 
 module.exports.validateListing=(req,res,next)=>{
     let {error}=ListingSchema.validate(req.body);
+    //console.log(req.body);
+
     if(error){
        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
+       console.log(errMsg);
+      throw new ExpressError(400,errMsg);
     }else{
         next();
     }

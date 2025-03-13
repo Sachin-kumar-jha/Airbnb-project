@@ -1,8 +1,9 @@
 const Listing=require("../models/list.js");
-const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const axios = require('axios');
+// Initialize Radar with your publishable ke
 //const { all } = require("../routes/listing.js");
-const mapToken=process.env.MAP_TOKEN;
-const geocodingClient = mbxGeocoding({ accessToken:mapToken});
+// const mapToken=process.env.MAP_TOKEN;
+// const geocodingClient = mbxGeocoding({ accessToken:mapToken});
 
 module.exports.index= async (req,res)=>{
     const allListings= await  Listing.find({});
@@ -32,25 +33,49 @@ module.exports.index= async (req,res)=>{
 
 /*------------------------------------------------------------------------------------------*/
 
-module.exports.createNewListing=async (req,res,next)=>{
+module.exports.createNewListing = async (req, res, next) => {
+   try {
+       const location = req.body.listing.location;
+       const RADAR_API_KEY = process.env.MAP_TOKEN;
 
-   let response= await geocodingClient.forwardGeocode({
-      query:req.body.listing.location,
-      limit:1,
-   }).send();
+       // Geocode the address using Radar's HTTP API
+       const response = await axios.get('https://api.radar.io/v1/geocode/forward', {
+           params: { query: location },
+           headers: { Authorization: RADAR_API_KEY }
+       });
 
-   let url=req.file.path;
-   let filename=req.file.filename;
-  const newListing=new Listing(req.body.listing);
-   newListing.owner=req.user._id;
-   newListing.image={url,filename};
+       const results = response.data.addresses;
+       if (!results.length) {
+           req.flash('error', 'Invalid location. Please try again.');
+           return res.redirect('/listings/new');
+       }
 
-   newListing.geometry=response.body.features[0].geometry;
+       const { latitude, longitude } = results[0].latitude ? results[0] : { latitude: 0, longitude: 0 };
 
-    let savedListing =await newListing.save();
-    console.log(savedListing);
-    req.flash("success","New listing created!");
-     res.redirect("/listings");
+       // Prepare image data
+       let url = req.file?.path;
+       let filename = req.file?.filename;
+
+       // Create new listing
+       const newListing = new Listing(req.body.listing);
+       newListing.owner = req.user._id;
+       newListing.image = { url, filename };
+       newListing.geometry = {
+           type: 'Point',
+           coordinates: [longitude, latitude] // GeoJSON format [lng, lat]
+       };
+
+       // Save the listing
+       const savedListing = await newListing.save();
+       console.log('Listing saved:', savedListing);
+
+       req.flash('success', 'New listing created!');
+       res.redirect('/listings');
+   } catch (error) {
+       console.error('Error creating listing:', error);
+       req.flash('error', 'Something went wrong.');
+       res.redirect('/listings/new');
+   }
 };
 
 /*------------------------------------------------------------------------------------------*/

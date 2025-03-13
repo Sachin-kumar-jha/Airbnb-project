@@ -1,7 +1,7 @@
-if(process.env.NODE_ENV != "productrion"){
+if(process.env.NODE_ENV != "production"){
     require('dotenv').config();
 }
-
+require('dotenv').config();
 const express=require("express");
 const app =express();
 const mongoose= require("mongoose");
@@ -36,7 +36,7 @@ main().then((res)=>{
     console.log("something is wrong");
 })
 async function main() {
-    await mongoose.connect(dbUrl);
+    await mongoose.connect(`${dbUrl}`);
   }
 
 const store = MongoStore.create({
@@ -57,10 +57,10 @@ const sessionOption={
     resave:false,
     saveUninitialized:true,
 
-    cookie:{
+cookie:{
 expires:Date.now() + 7*24*60*60*1000,
 maxAge:7*24*60*60*1000,
-httpOnly:true
+httpOnly:true,
 },
 };
 
@@ -83,7 +83,7 @@ app.use((req,res,next)=>{
     res.locals.currUser=req.user;
     next();
 });
-
+app.locals.MAP_TOKEN = process.env.MAP_TOKEN
   app.use("/listings",listingRouter);
   app.use("/listings/:id/reviews",reviewRouter);
   app.use("/",userRouter);
